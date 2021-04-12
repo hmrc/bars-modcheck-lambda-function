@@ -13,7 +13,7 @@ ThisBuild / libraryDependencies ++= Seq(
   "org.apache.httpcomponents" % "httpclient" % "4.5.3",
   "org.seleniumhq.selenium" % "htmlunit-driver" % "2.37.0",
   "org.seleniumhq.selenium" % "selenium-support" % "3.141.59",
-  "co.wrisk.jcredstash" % "jcredstash" % "0.0.3",
+  "me.lamouri" % "jcredstash" % "2.1.1",
   "org.mockito" % "mockito-core" % "2.8.47" % "test",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 )

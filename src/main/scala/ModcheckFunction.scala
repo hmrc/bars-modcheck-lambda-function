@@ -1,8 +1,7 @@
 import java.util
-
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.jessecoyle.JCredStash
+import me.lamouri.JCredStash
 
 class ModcheckFunction {
   def handler(input: String, context: Context): Int = {
@@ -26,6 +25,6 @@ object ModcheckFunction {
     hm
   }
   def retrieveCredential(credName: String): String = {
-    new JCredStash().getSecret(credName, context)
+    new JCredStash().getSecret("credential-store", credName, context)
   }
 }
