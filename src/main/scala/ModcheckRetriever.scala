@@ -9,7 +9,7 @@ class ModcheckRetriever(driver: ExtendedHtmlUnitDriver, baseUrl: String, logger:
   def retrieve(): Array[Byte] = {
     driver.get(baseUrl)
 
-    waitForElementToBeClickable(By.partialLinkText("Modulus Weight"), "Could not find Modulus Weight Table link.").click()
+    waitForElementToBeClickable(By.partialLinkText("Valacdos"), "Could not find Modulus Weight Table link.").click()
 
     org.apache.commons.io.IOUtils.toByteArray(driver.getPage.getWebResponse.getContentAsStream)
   }
