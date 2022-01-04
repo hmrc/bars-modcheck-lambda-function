@@ -1,16 +1,17 @@
-import java.util
-import com.amazonaws.services.lambda.runtime.Context
+import com.amazonaws.services.lambda.runtime.{Context, LambdaLogger}
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import me.lamouri.JCredStash
 
 class ModcheckFunction {
-  def handler(input: String, context: Context): Int = {
+  def handler(notUsed: String, context: Context): Int = {
     val bucket = System.getenv("BUCKET_NAME")
     val region = System.getenv("AWS_REGION")
 
-    val retriever = new ModcheckRetriever(new ExtendedHtmlUnitDriver(), "https://www.vocalink.com/tools/modulus-checking/", context.getLogger)
+    val logger = if(Option(context).isEmpty) new LambdaLogger {override def log(string: String): Unit = println(string)}
+    else context.getLogger
 
-    val writer = new ModcheckWriter(AmazonS3ClientBuilder.standard().withRegion(region).build(), bucket)
+    val retriever = new ModcheckRetriever(new ExtendedHtmlUnitDriver(), "https://www.vocalink.com/tools/modulus-checking/", logger)
+
+    val writer = new AWSModcheckWriter(AmazonS3ClientBuilder.standard().withRegion(region).build(), bucket)
 
     writer.write(retriever.retrieve())
 
@@ -18,13 +19,10 @@ class ModcheckFunction {
   }
 }
 
-object ModcheckFunction {
-  val context: java.util.HashMap[String,String] = {
-    val hm = new util.HashMap[String,String]()
-    hm.put("role", "bacs_modcheck")
-    hm
-  }
-  def retrieveCredential(credName: String): String = {
-    new JCredStash().getSecret("credential-store", credName, context)
-  }
+object ModcheckFunction extends App {
+  val logger = new LambdaLogger {override def log(string: String): Unit = println(string)}
+
+  val retriever = new ModcheckRetriever(new ExtendedHtmlUnitDriver(), "https://www.vocalink.com/tools/modulus-checking/", logger)
+  val writer = new LocalModcheckWriter("/Users/saqib/Temp/")
+  writer.write(retriever.retrieve())
 }
