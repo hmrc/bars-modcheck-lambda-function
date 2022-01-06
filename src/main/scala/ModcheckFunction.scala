@@ -18,11 +18,3 @@ class ModcheckFunction {
     0
   }
 }
-
-object ModcheckFunction extends App {
-  val logger = new LambdaLogger {override def log(string: String): Unit = println(string)}
-
-  val retriever = new ModcheckRetriever(new ExtendedHtmlUnitDriver(), "https://www.vocalink.com/tools/modulus-checking/", logger)
-  val writer = new LocalModcheckWriter("/Users/saqib/Temp/")
-  writer.write(retriever.retrieve())
-}
