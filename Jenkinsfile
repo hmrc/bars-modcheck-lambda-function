@@ -15,6 +15,7 @@ pipeline {
     stage('Upload to s3') {
       steps {
         sh("""
+           make push-s3 S3_BUCKET=txm-lambda-functions-externaltest
            make push-s3 S3_BUCKET=txm-lambda-functions-integration
            make push-s3 S3_BUCKET=txm-lambda-functions-qa
            make push-s3 S3_BUCKET=txm-lambda-functions-staging
